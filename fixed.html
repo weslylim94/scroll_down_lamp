@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+  <meta charset="utf-8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<head>
+    <title>Wesly</title>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+
+<body>
+
+<body>
+  <div id="lamp">
+    
+  </div>
+  <div id="container" style="height: 100vh; overflow: scroll">
+    <div id="content">
+      <div class="panel">
+      </div>
+      <div class="panel">
+      </div>
+      <div class="panel">
+      </div>      
+      <div class="panel">
+      </div>      
+      <div class="panel">
+      </div>      
+      <div class="panel">
+      </div>      
+      <div class="panel">
+      </div>      
+      <div class="panel">
+      </div>
+    </div>
+  </div>
+ 
+  <script>
+    var WIDTH = window.innerWidth
+    var HEIGHT = window.innerHeight
+    
+    var translate = 'translate(' + (WIDTH / 2) + ',' + 150 + ')'
+
+    var svg = d3.select("#lamp").append("svg")
+    	.attr('width', WIDTH)
+    	.attr('height', HEIGHT)
+  
+    svg.append("defs")
+        .append("pattern")
+        .attr("id", "venus")
+        .attr('patternUnits', 'userSpaceOnUse')
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .append("image")
+        .attr("xlink:href", "https://images.pexels.com/photos/39811/pexels-photo-39811.jpeg?w=1260&h=750&dpr=2&auto=compress&cs=tinysrgb")
+        .attr("preserveAspectRatio", "none")
+        .attr("width", "100%")
+        .attr("height", "100%");
+
+    svg.append("filter")
+      .attr("id", "blur")
+    .append("feGaussianBlur")
+      .attr("stdDeviation", 0);
+
+    var background = svg.append("rect")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("preserveAspectRatio", "none")
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("fill", "url(#venus)")
+      .attr("filter", "url(#blur)");
+    
+    var currentScrollTop = d3.select('#currentScrollTop')
+
+
+    var body = d3.select('body').node()
+    var container = d3.select('#container')
+    var content = d3.select('#content')
+    
+    var SCROLL_LENGTH = content.node().getBoundingClientRect().height - HEIGHT
+    
+    var scrollTop = 0
+    var newScrollTop = 0
+    
+		container
+  		.on("scroll.scroller", function() {
+      	newScrollTop = container.node().scrollTop
+	    });
+
+    var setDimensions = function() {
+      WIDTH = window.innerWidth / 2
+			HEIGHT = window.innerHeight
+      SCROLL_LENGTH = content.node().getBoundingClientRect().height - HEIGHT
+      console.log(SCROLL_LENGTH)
+    }
+    
+    function dropBall(){
+        var yPos = -10 + (scrollTop/10);
+        var xPos = 0;
+
+
+        if(scrollTop <= 350){
+          svg.selectAll('#blur').remove();
+          svg.append("filter")
+            .attr("id", "blur")
+          .append("feGaussianBlur")
+            .attr("stdDeviation", scrollTop/10);
+
+          svg.selectAll('#venus').remove();
+          svg.append("defs")
+            .append("pattern")
+            .attr("id", "venus")
+            .attr('patternUnits', 'userSpaceOnUse')
+            .attr("width", "100%")
+            .attr("height", "100%")
+            .append("image")
+            .attr("xlink:href", "https://images.pexels.com/photos/39811/pexels-photo-39811.jpeg?w=1260&h=750&dpr=2&auto=compress&cs=tinysrgb")
+            .attr("preserveAspectRatio", "none")
+            .attr("width", "100%")
+            .attr("height", "100%");
+          background
+            .attr("fill", "url(#venus)")
+            .attr('filter', "url(#blur)");
+        } else if(scrollTop > 350 && scrollTop < 1000) {
+          console.log(scrollTop);
+          svg.selectAll('#blur').remove();
+          svg.append("filter")
+            .attr("id", "blur")
+          .append("feGaussianBlur")
+            .attr("stdDeviation", -1*((scrollTop/10) - 75));
+
+          svg.selectAll("#venus").remove()
+          svg.append("defs")
+            .append("pattern")
+            .attr("id", "venus")
+            .attr('patternUnits', 'userSpaceOnUse')
+            .attr("width", "100%")
+            .attr("height", "100%")
+            .append("image")
+            .attr("xlink:href", "https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?w=1260&h=750&dpr=2&auto=compress&cs=tinysrgb")
+            .attr("preserveAspectRatio", "none")
+            .attr("width", "100%")
+            .attr("height", "100%");
+
+          background
+            .attr('fill', 'url(#venus)')
+            .attr('filter', "url(#blur)");
+        } else if(scrollTop > 1000 && scrollTop < 1400) {
+            svg.selectAll('#blur').remove();
+            svg.append("filter")
+              .attr("id", "blur")
+            .append("feGaussianBlur")
+              .attr("stdDeviation", (scrollTop/10)-108);
+
+            svg.selectAll("#venus").remove()
+            svg.append("defs")
+              .append("pattern")
+              .attr("id", "venus")
+              .attr('patternUnits', 'userSpaceOnUse')
+              .attr("width", "100%")
+              .attr("height", "100%")
+              .append("image")
+              .attr("xlink:href", "https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?w=1260&h=750&dpr=2&auto=compress&cs=tinysrgb")
+              .attr("preserveAspectRatio", "none")
+              .attr("width", "100%")
+              .attr("height", "100%");
+        } else {
+          svg.selectAll('#blur').remove();
+          svg.append("filter")
+            .attr("id", "blur")
+          .append("feGaussianBlur")
+            .attr("stdDeviation", -1*((scrollTop/10)-180));
+
+          svg.selectAll("#venus").remove()
+          svg.append("defs")
+            .append("pattern")
+            .attr("id", "venus")
+            .attr('patternUnits', 'userSpaceOnUse')
+            .attr("width", "100%")
+            .attr("height", "100%")
+            .append("image")
+            .attr("xlink:href", "https://images.pexels.com/photos/371633/pexels-photo-371633.jpeg?w=1260&h=750&dpr=2&auto=compress&cs=tinysrgb")
+            .attr("preserveAspectRatio", "none")
+            .attr("width", "100%")
+            .attr("height", "100%");
+
+          background
+            .attr('fill', 'url(#venus)')
+            .attr('filter', "url(#blur)");
+        }
+    }
+
+    var render = function() {
+      if (scrollTop !== newScrollTop) {
+        scrollTop = newScrollTop
+
+        var fixed = 0;
+        var countL = 0;
+        dropBall()
+        currentScrollTop.text(scrollTop)
+      }
+      
+      window.requestAnimationFrame(render)
+    }
+    window.requestAnimationFrame(render)
+    
+    window.onresize = setDimensions
+  </script>
+</body>
